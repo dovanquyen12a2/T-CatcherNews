@@ -1,0 +1,5 @@
+﻿.selected-row {
+    background-color: #00cfe8 !important; /* Màu nền tô đậm */
+    font-weight: bold; /* Chữ đậm */
+    color: red;
+}

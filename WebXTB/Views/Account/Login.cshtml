@@ -1,0 +1,94 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Đăng nhập";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Đăng nhập</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    @Styles.Render("~/bundles/css/login")
+
+</head>
+<body class="hold-transition login-page">
+
+
+    <div class="login-box">
+        <div id="div_login" class="div_login">
+            <div class="logo-login">
+
+                <img alt="ekhqs" src="~/Content/images/osint.ico" style="width: 50px" title="">
+            </div>
+            <div class="baner-text">
+                <p class="text-logo" style="font-weight:bold">T-CATCHER NEWS</p>
+                <p class="txt-project"  style="font-weight:bold">
+                    HỆ THỐNG THU THẬP TIN TỨC NGUỒN MỞ
+                </p>
+            </div>
+        </div>
+        <div class="login-box-body">
+            <div>
+                <div id="SslWarning" style="color: red;">
+                </div>
+                <table id="loginControl" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">
+                    <tbody>
+                        
+                        <tr>
+                            <td>
+
+                                @using (@Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="form-group has-feedback">
+                                        <input type="text" name="username" value="" id="username" class="form-control" required  placeholder="Nhập tài khoản"/>
+                                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <input type="password" name="password" value="" id="password" class="form-control" required placeholder="Nhập mật khẩu"/>
+                                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <div class="checkbox icheck">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="login-hr">
+                                    </div>
+                                       if (TempData["Error"] != null)//kiểm tra thông báo để hiển thị
+                                        {
+                                            <div id="alert" class="alert alert-danger">
+                                                <i class="fa fa-exclamation-circle"></i>Thất bại : @TempData["Error"]
+                                            </div>
+                                        }
+                                    <div class="row">
+                                        <div class="col-xs-4" style="float:right">
+                                            <button type="submit" class="btn btn-primary btn-block btn-flat">Đăng nhập</button>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="login-footer">
+            <p class="sologin">Bản quyền thuộc về Cục T1</p>
+        </div>
+    </div>
+    <script>
+    </script>
+</body>
+</html>

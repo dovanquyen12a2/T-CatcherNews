@@ -1,0 +1,128 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    @Styles.Render("~/app-assets/css/pages-news/newsViewer.css")
+</head>
+<body>
+        <div class="row">
+            <div class="col-12">
+                    <div class="form-group row" style="margin-bottom:0.4rem;">
+                        <div class="col-sm-8 col-form-label" style="display:inline-flex">
+                            &ensp;
+                            <p style="margin-top:5px"><strong>Keyword:  </strong></p>
+                            <input type="text" id="mainKeyword" class="form-control form-control-sm" name="mainKeyword" />
+                            &ensp;
+                            <p style="margin-top:5px"><strong>Combine:  </strong></p>
+                            <input type="text" id="combineKeyword" class="form-control form-control-sm" name="combineKeyword" />
+                            &ensp;
+                            <p style="margin-top:5px"><strong>Except:  </strong></p>
+                            <input type="text" id="expectKeyword" class="form-control form-control-sm" name="expectKeyword" />
+                            &ensp;
+                            <p style="margin-top:5px"><strong>Source:  </strong></p>
+                            &ensp;
+                            <select class="form-control-sm" id="source" style="max-width:120px">
+                                <option value="-1" selected> Tất cả</option>
+                                <option value="0"> Website</option>
+                                <option value="2"> Youtube</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 col-form-label" style="display:inline-flex">
+                            <p style="margin-top:5px"><strong>Thời gian:  </strong></p>
+                            &ensp;
+                            <input type="text" id="tuNgay" class="form-control-sm  pickadate-months-year" name="tuNgay" style="max-width:120px" />
+                            &ensp;
+
+                            <input type="text" id="denNgay" class="form-control-sm  pickadate-months-year" name="denNgay" style="max-width:120px" />
+                            &emsp;
+                            <button class="btn-sm form-control-sm  btn-gradient-primary" onclick="getDataByButtonSearch()"><i data-feather='search'></i>&ensp; Search</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Upload File Card starts -->
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card">
+                        <section id="ajax-datatable">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-datatable">
+                                            <table class="datatables-ajax table" id="datatables-newsviewer">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10%">Thời gian</th>
+                                                        <th width="90%">Tiêu đề</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 id="cardTitle">Chi tiết bài viết</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="newsTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="text-tab" data-bs-toggle="tab"
+                                        data-bs-target="#textTab" type="button" role="tab">
+                                    Nội dung
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="video-tab" data-bs-toggle="tab"
+                                        data-bs-target="#videoTab" type="button" role="tab">
+                                    Video
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-3" id="newsTabsContent">
+                            <!-- Tab nội dung -->
+                            <div class="tab-pane fade show active" id="textTab" role="tabpanel">
+                                <div class="mb-2">
+                                    <strong>URL:</strong>
+                                    <a id="cardURL" href="#" target="_blank">(Chưa chọn bài viết)</a>
+                                </div>
+
+                                <textarea id="cardContent" class="form-control" rows="20" readonly
+                                          style="white-space: pre-wrap; font-family: Consolas, monospace;"></textarea>
+                            </div>
+
+                            <!-- Tab video -->
+                            <div class="tab-pane fade" id="videoTab" role="tabpanel">
+                                <div class="mb-2">
+                                    <strong>Video URL:</strong>
+                                    <a id="videoURL" href="#" target="_blank">(Chưa có video)</a>
+                                </div>
+                                <div class="ratio ratio-16x9">
+                                    <iframe id="youtubeFrame" width="100%" height="315" frameborder="0"
+                                            allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+
+        </div>
+        <!-- BEGIN: Page JS-->
+        @Scripts.Render("~/app-assets/js/pages-news/newsViewer.js")
+
+        <!-- END: Page JS-->
+
+</body>
+</html>

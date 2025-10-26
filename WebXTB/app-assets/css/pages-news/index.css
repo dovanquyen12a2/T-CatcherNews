@@ -1,0 +1,72 @@
+﻿#tagCloudCanvas {
+    width: 100%;
+    height: 350px;
+    border-radius: 50%; /* tạo cảm giác hình cầu */
+    overflow: hidden;
+}
+#newsContainer {
+    max-height: 330px;
+    overflow-y: auto;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.news-favicon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 6px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.news-content {
+    line-height: 1.3em;
+}
+
+.news-time {
+    color: #0078d7;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.news-source {
+    color: red;
+    font-weight: bold;
+}
+
+.news-title {
+    color: #000;
+    font-weight: bold;
+}
+
+.news-url {
+    display: block;
+    color: #0044cc;
+    font-size: 13px;
+    margin-top: 2px;
+    text-decoration: none;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.news-item {
+    font-family: "Segoe UI", sans-serif;
+    line-height: 1.4em;
+}
+
+    .news-item a {
+        word-break: break-all;
+    }
