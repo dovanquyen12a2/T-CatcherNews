@@ -12,19 +12,20 @@
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-    .video-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* hover nổi nhẹ */
-    }
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* hover nổi nhẹ */
+}
 
 /* Title + date */
 .video-title {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     padding: 8px 10px 0;
     flex-grow: 1;
     text-align: center;
     color: #333;
+
 }
 
 .video-date {
@@ -42,28 +43,29 @@
     overflow: hidden;
 }
 
-    .lazy-yt img,
-    .lazy-yt iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover;
-        cursor: pointer;
-        transition: transform 0.3s ease-in-out;
-    }
+ .lazy-yt img,
+ .lazy-yt iframe {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100% !important;
+     height: 100% !important;
+     object-fit: cover;
+     cursor: pointer;
+     transition: transform 0.3s ease-in-out;
+ }
 
-        .lazy-yt img:hover {
-            transform: scale(1.05); /* zoom nhẹ ảnh khi hover */
-        }
+ .lazy-yt img:hover {
+     transform: scale(1.05); /* zoom nhẹ ảnh khi hover */
+ }
 
 /* 🟦 5 cột trên màn hình lớn */
 .col-5th {
     flex: 0 0 20%;
     max-width: 20%;
     padding-bottom: 12px; /* 👈 thêm khoảng cách hàng */
-    padding-left: 12px
+    padding-left: 12px;
+    height: 25vh;
 }
 
 /* Tablet: 3 cột */
@@ -72,6 +74,9 @@
         flex: 0 0 33.3333%;
         max-width: 33.3333%;
         padding-bottom: 14px;
+    }
+    .video-title {
+        display: none;
     }
 }
 
@@ -82,4 +87,40 @@
         max-width: 100%;
         padding-bottom: 16px;
     }
+    .video-title {
+        display: none;
+    }
+}
+@media (max-width: 1280px) {
+    .col-5th {
+        flex: 0 0 20%;
+        max-width: 20%;
+        padding-bottom: 12px; /* 👈 thêm khoảng cách hàng */
+        padding-left: 12px;
+        height: 29vh;
+    }
+
+    .video-title {
+        display: none;
+    }
+}
+@media (max-width: 1920px) {
+    .col-5th {
+        flex: 0 0 20%;
+        max-width: 20%;
+        padding-bottom: 12px; /* 👈 thêm khoảng cách hàng */
+        padding-left: 12px;
+        height: 29vh;
+    }
+
+}
+.status-badge {
+    display: inline-block;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: 4px;
 }

@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    @Styles.Render("~/app-assets/css/pages-news/newTarget.css")
+</head>
+<body>
+    <div class="row">
+        <!-- Upload File Card starts -->
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header" style="justify-content:center">
+                    <div class="text-center">
+                        <h4 class="card-title bold" style="font-weight:600">All Targets</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12" style="text-align:center">
+                            <button class="btn btn-success mr-1" id="start" onclick="startSearchNewTarget()"><i data-feather='edit'></i>  Start</button>
+                            <button class="btn btn-primary mr-1" id="stop" data-toggle="modal" data-target="#modalNoiDung"><i data-feather='book'></i>  Stop</button>
+                            <button class="btn btn-danger" id="search"><i data-feather='x-octagon'></i>  Xóa</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <textarea id="logBox" rows="20" cols="100" style="width:100%;font-family:Consolas;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-sm-12">
+            <div class="card">
+               
+            </div>
+        </div>
+      
+    </div>
+    <div class="row">
+       
+      
+    </div>
+    <!-- BEGIN: Page JS-->
+    @Scripts.Render("~/app-assets/js/pages-news/newTarget.js")
+
+    <!-- END: Page JS-->
+
+</body>
+</html>

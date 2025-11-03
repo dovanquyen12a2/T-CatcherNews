@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Drawing;
 using System.Globalization;
@@ -12,11 +14,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Windows.Forms;
 using WebsiteMonitoring;
+using WebXTB.Support;
 
 namespace TCatcherClient.Controllers
 {
@@ -314,7 +318,7 @@ namespace TCatcherClient.Controllers
                     .GroupBy(k => k)
                     .Select(g => new { word = g.Key, count = g.Count() })
                     .OrderByDescending(x => x.count)
-                    .Take(60) // 👈 Giới hạn top 100 từ
+                    .Take(50) // 👈 Giới hạn top 40 từ
                     .ToList();
 
                 if (!freq.Any())
@@ -609,6 +613,124 @@ namespace TCatcherClient.Controllers
             }
         }
 
+        #endregion
+
+        #region
+        public ActionResult NewTarget()
+        {
+            lstNewsCatalog.Add("AntiVietNam");
+            return View();
+        }
+        public void SearchNewTargetStream()
+        {
+            Response.ContentType = "text/event-stream"; // định dạng SSE
+            Response.BufferOutput = false;
+
+            try
+            {
+                List<string> lstTemp = new List<string>(), lstTitle = new List<string>(), lstSearchingKeyword = new List<string>();
+                DataTable dtTemp = new DataTable();
+                string strContent = "";
+                List<string> lstQuery = new List<string>();
+                csGetMongoData.GetListKeyword(ref lstSearchingKeyword, "TargetIdentificationKeyword");
+                lstQuery.Clear();
+                Random x0 = new Random();
+
+                for (int t = 0; t < lstSearchingKeyword.Count; t++)
+                {
+                    //if (lstSearchingKeyword[t].Contains("www.youtube.com"))
+                    //{
+                    //    lstQuery.Add(lstSearchingKeyword[t]);
+                    //    lstQuery.Add("https://www.google.com/search?q=bitcoin");
+                    //    continue;
+                    //}
+                    //if (lstSearchingKeyword[t].Contains("inurl:facebook.com/groups/"))
+                    //{
+                    //    lstQuery.Add("https://www.google.com/search?q=" + lstSearchingKeyword[t] + "&num=100&hl=en&tbas=0&tbs=qdr:w&filter=1&lr=lang_vi");
+                    //    lstQuery.Add("https://www.google.com/search?q=harry+potter");
+                    //    continue;
+                    //}
+                    //if (lstSearchingKeyword[t].Contains("site:facebook.com inurl:/posts/"))
+                    //{
+                    //    lstQuery.Add("https://www.google.com/search?q=" + lstSearchingKeyword[t] + "&num=100&hl=en&tbas=0&tbs=qdr:w&filter=1&lr=lang_vi");
+                    //    lstQuery.Add("https://www.google.com/search?q=" + x0.Next(1000000) + "a");
+                    //    continue;
+                    //}
+
+                    lstQuery.Add("https://www.google.com/search?num=100&lr=lang_vi&hl=en&tbs=qdr:w&filter=1&q=" + lstSearchingKeyword[t]);
+                    lstQuery.Add("https://www.google.com/search?q=" + x0.Next(1000000));
+                }
+
+                string strBlocked = "";
+                Random rdQuery = new Random();
+
+                for (int t = 0; t < lstQuery.Count; t++)
+                {
+                    string status = lstQuery[t].Contains("youtube") ? "YouTube" :
+                                    lstQuery[t].Contains("facebook") ? "Facebook" : "Google";
+                    Response.Write($"data: {{\"step\":{t + 1},\"status\":\"Đang tìm trên {status}\",\"query\":\"{lstQuery[t]}\"}}\n\n");
+                    Response.Flush();
+
+                    lstTemp.Clear();
+                    lstTitle.Clear();
+                    strContent = csSupport.GetWebPageContentForGoogleSearch(lstQuery[t]);
+
+                    if (strContent.Contains("Our systems have detected unusual traffic")) strBlocked = "Blocked";
+                    else strBlocked = "";
+
+                    if (strBlocked != "Blocked")
+                    {
+                        if (lstQuery[t].Contains("youtube"))
+                        {
+                            List<string> lstChannelName = new List<string>();
+                            csSupport.GetListYoutube(strContent, ref lstTemp, ref lstChannelName);
+                            csSupport.CheckTargetExist_Youtube(ref lstTemp, ref lstChannelName);
+
+                            for (int k = 0; k < lstTemp.Count; k++)
+                                csGetMongoData.InsertIntoNewTarget(lstTemp[k], lstChannelName[k]);
+                        }
+
+                        if (lstQuery[t].Contains("lr=lang_vi&"))
+                        {
+                            csSupport.GetSiteFromGoogleSearch(ref lstTemp, strContent);
+                            csSupport.CheckTargetExist(ref lstTemp);
+
+                            for (int k = 0; k < lstTemp.Count; k++)
+                            {
+                                strContent = csSupport.GetWebPageContent_AutoProxy(lstTemp[k]);
+                                if (strContent == "") continue;
+                                string strTitle = csSupport.GetSiteTitle(strContent);
+                                lstTitle.Add(strTitle);
+                                csGetMongoData.InsertIntoNewTarget(lstTemp[k], strTitle);
+                            }
+                        }
+
+                        int time = rdQuery.Next(10) + 30;
+                        Response.Write($"data: {{\"status\":\"Ngủ {time}s trước vòng kế tiếp\"}}\n\n");
+                        Response.Flush();
+                        Thread.Sleep(time * 1000);
+                    }
+                    else
+                    {
+                        for (int wait = 1200; wait >= 0; wait--)
+                        {
+                            Response.Write($"data: {{\"status\":\"Bị block, chờ {wait}s\"}}\n\n");
+                            Response.Flush();
+                            Thread.Sleep(1000);
+                        }
+                    }
+                }
+
+                Response.Write("data: {\"done\":true}\n\n");
+                Response.Flush();
+            }
+            catch (Exception ex)
+            {
+                var err = Newtonsoft.Json.JsonConvert.SerializeObject(new { error = true, message = ex.Message });
+                Response.Write($"data: {err}\n\n");
+                Response.Flush();
+            }
+        }
         #endregion
     }
 }

@@ -2,7 +2,7 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <History>True|2025-10-26T08:39:16.7179978Z||;True|2025-10-26T15:26:02.2859935+07:00||;False|2025-10-26T15:25:56.0743129+07:00||;</History>
+    <History>True|2025-10-28T07:50:48.7366469Z||;True|2025-10-28T10:47:07.0343648+07:00||;True|2025-10-27T09:44:09.1862953+07:00||;False|2025-10-27T09:44:04.1220396+07:00||;True|2025-10-26T15:39:16.7179978+07:00||;True|2025-10-26T15:26:02.2859935+07:00||;False|2025-10-26T15:25:56.0743129+07:00||;</History>
     <LastFailureDetails />
     <_PublishTargetUrl>C:\Users\PC-04\Desktop\TCatcherClient\WebXTB\bin\app.publish\</_PublishTargetUrl>
   </PropertyGroup>
@@ -113,13 +113,13 @@
       <publishTime>07/15/2025 16:22:46</publishTime>
     </File>
     <File Include="app-assets/css/pages-news/index.css">
-      <publishTime>10/25/2025 16:30:30</publishTime>
+      <publishTime>10/28/2025 11:27:28</publishTime>
     </File>
     <File Include="app-assets/css/pages-news/newsViewer.css">
       <publishTime>10/26/2025 12:49:58</publishTime>
     </File>
     <File Include="app-assets/css/pages-news/youtubeMonitor.css">
-      <publishTime>10/26/2025 14:34:38</publishTime>
+      <publishTime>10/28/2025 11:09:02</publishTime>
     </File>
     <File Include="app-assets/css/pages/app-calendar.css">
       <publishTime>07/16/2025 21:44:50</publishTime>
@@ -2090,13 +2090,13 @@
       <publishTime>10/25/2025 12:34:04</publishTime>
     </File>
     <File Include="app-assets/js/pages-news/index.js">
-      <publishTime>10/25/2025 17:10:12</publishTime>
+      <publishTime>10/28/2025 11:29:55</publishTime>
     </File>
     <File Include="app-assets/js/pages-news/newsViewer.js">
       <publishTime>10/26/2025 12:52:35</publishTime>
     </File>
     <File Include="app-assets/js/pages-news/youtubeMonitor.js">
-      <publishTime>10/26/2025 14:45:41</publishTime>
+      <publishTime>10/28/2025 11:04:10</publishTime>
     </File>
     <File Include="app-assets/js/scripts/cards/card-advance.js">
       <publishTime>10/25/2025 12:34:04</publishTime>
@@ -4298,10 +4298,10 @@
       <publishTime>07/15/2025 16:22:48</publishTime>
     </File>
     <File Include="bin/WebApplication1.dll">
-      <publishTime>10/26/2025 15:39:14</publishTime>
+      <publishTime>10/28/2025 11:03:31</publishTime>
     </File>
     <File Include="bin/WebApplication1.pdb">
-      <publishTime>10/26/2025 15:39:14</publishTime>
+      <publishTime>10/28/2025 11:03:31</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>07/15/2025 16:22:48</publishTime>
@@ -4505,7 +4505,7 @@
       <publishTime>10/26/2025 15:38:45</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>10/25/2025 16:30:31</publishTime>
+      <publishTime>10/28/2025 11:28:11</publishTime>
     </File>
     <File Include="Views/Home/NewsViewer.cshtml">
       <publishTime>10/26/2025 12:54:32</publishTime>

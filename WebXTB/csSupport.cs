@@ -817,9 +817,9 @@ namespace WebsiteMonitoring
             {
                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
                 myRequest.UserAgent = csGlobal.agent_firefox;
-//WebProxy myproxy = new WebProxy("127.0.0.1", 9666);
-              //  myproxy.BypassProxyOnLocal = false;
-            //    myRequest.Proxy = myproxy;
+                WebProxy myproxy = new WebProxy("127.0.0.1", 9666);
+                myproxy.BypassProxyOnLocal = false;
+                myRequest.Proxy = myproxy;
 
                 myRequest.Timeout = 60000;
                 WebResponse myResponse = myRequest.GetResponse();
@@ -1066,7 +1066,7 @@ namespace WebsiteMonitoring
         }
         #endregion
    
-    #region {GetDomainName}
+        #region {GetDomainName}
     static public string GetDomainName(string url)
         {
           /*  if (url.Length < 8) return "";
@@ -1099,7 +1099,7 @@ namespace WebsiteMonitoring
             return "";
         }
     #endregion
-    #region {GetSiteFromGoogleSearch}
+        #region {GetSiteFromGoogleSearch}
     static public void GetSiteFromGoogleSearch(ref List<string> lstSite, string strContent)
         {
             lstSite.Clear();
@@ -1989,9 +1989,252 @@ namespace WebsiteMonitoring
         #region {Delete Documents}
 
         #endregion
-      
+        #region {GetWebPageContent_GoogleSearch}
+        static public string GetWebPageContent_GoogleSearch(string url)
+        {
+            string result = "";
+            try
+            {
+                HttpWebRequest myRequest1 = (HttpWebRequest)WebRequest.Create(url);
+                myRequest1.Proxy = new WebProxy("127.0.0.1", 9666);
+                myRequest1.Timeout = 30000;
+                WebResponse myResponse1 = myRequest1.GetResponse();
+                StreamReader sr1;
+                sr1 = new StreamReader(myResponse1.GetResponseStream(), Encoding.UTF8);
+                result = sr1.ReadToEnd();
+                sr1.Close();
+                myResponse1.Close();
+            }
+            catch { }
+
+            return HttpUtility.HtmlDecode(result);
+        }
+        #endregion
+        #region {GetListYoutube}
+        static public void GetListYoutube(string strContent, ref List<string> lstSite, ref List<string> lstChannelName)
+        {
+            lstSite.Clear();
+            lstChannelName.Clear();
+            HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
+            List<string> lstContent = new List<string>();
+            document.LoadHtml(strContent);
+            string strXpath = "//div[contains(@class,'yt-lockup-byline')]";
+            try
+            {
+                foreach (HtmlNode element in document.DocumentNode.SelectNodes(strXpath)) //   //div[contains(@class,'Enter Value In Here')]
+                {
+                    try
+                    {
+                        string strTemp = element.InnerHtml, strLink = "", strName = "";
+                        int index1 = 0, index2 = 0;
+                        if (strTemp.Contains("<a href=\"/user/") == true)
+                        {
+                            index1 = strTemp.IndexOf("<a href=\"/user/");
+                            index2 = strTemp.IndexOf("\"", index1 + "<a href=\"/user/".Length);
+                            strLink = "https://www.youtube.com/user/" + strTemp.Substring(index1 + "<a href=\"/user/".Length, index2 - index1 - "<a href=\"/user/".Length);
+                            index1 = strTemp.IndexOf(">", index2);
+                            index2 = strTemp.IndexOf("</a>", index1);
+                            strName = strTemp.Substring(index1 + 1, index2 - index1 - 1).Trim();
+                            if (lstSite.Contains(strLink) == false)
+                            {
+                                lstSite.Add(strLink);
+                                lstChannelName.Add(strName);
+                            }
+                        }
+                        else
+                            if (strTemp.Contains("<a href=\"/channel/") == true)
+                        {
+                            index1 = strTemp.IndexOf("<a href=\"/channel/");
+                            index2 = strTemp.IndexOf("\"", index1 + "<a href=\"/channel/".Length);
+                            strLink = "https://www.youtube.com/channel/" + strTemp.Substring(index1 + "<a href=\"/channel/".Length, index2 - index1 - "<a href=\"/channel/".Length);
+                            index1 = strTemp.IndexOf(">", index2);
+                            index2 = strTemp.IndexOf("</a>", index1);
+                            strName = strTemp.Substring(index1 + 1, index2 - index1 - 1).Trim();
+                            if (lstSite.Contains(strLink) == false)
+                            {
+                                lstSite.Add(strLink);
+                                lstChannelName.Add(strName);
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch { }
+        }
+        static public void GetListYoutube1(string strContent, ref List<string> lstSite)
+        {
+            List<string> lstChannelName = new List<string>();
+            try
+            {
+                lstSite.Clear();
+
+                if (strContent == "") return;
+                string[] lines = strContent.Split(new char[2] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    lines[i] = lines[i].Trim();
+                    if (lines[i].Length < "https://www.youtube.com/watch?v=".Length) continue;
+                    if (lines[i].Substring(0, "https://www.youtube.com/watch?v=".Length) == "https://www.youtube.com/watch?v=")
+                    {
+                        //copy firefox
+                        string strChannel = "";
+                        int index = lines[i + 1].IndexOf("Uploaded by ");
+                        if (index > 0) strChannel = lines[i + 1].Substring(index + "Uploaded by ".Length, lines[i + 1].Length - index - "Uploaded by ".Length).Trim();
+                        if (lstChannelName.IndexOf(strChannel) < 0)
+                        {
+                            string strresult = GetWebPageContentProxy_Ultrasurf(lines[i].Trim());
+                            if (strresult == "") continue;
+                            index = strresult.IndexOf("<div class=\"yt-user-info\">");
+                            if (index < 0) continue;
+                            index = strresult.IndexOf("<a href=\"/", index + "<div class=\"yt-user-info\">".Length);
+                            if (index < 0) continue;
+                            int index1 = strresult.IndexOf("\"", index + "<a href=\"/".Length);
+                            if (index1 < 0) continue;
+                            lstSite.Add("https://www.youtube.com/" + strresult.Substring(index + "<a href=\"/".Length, index1 - "<a href=\"/".Length - index));
+                            lstChannelName.Add(strChannel);
+                        }
+                        i += 1;
+
+                        //copy internet explorer
+                        /* int index = lines[i + 1].IndexOf("Uploaded by ");
+                         if (index < 0) continue;
+                         string strChannel = lines[i + 1].Substring(index + "Uploaded by ".Length, lines[i + 1].Length - index - "Uploaded by ".Length).Trim();
+                         if (lstChannelName.IndexOf(strChannel) < 0)
+                         {
+                             string strresult = GetWebPageContentProxy_Ultrasurf(lines[i].Trim());
+                             if (strresult == "") continue;
+                             index = strresult.IndexOf("<div class=\"yt-user-info\">");
+                             if (index < 0) continue;
+                             index = strresult.IndexOf("<a href=\"/", index + "<div class=\"yt-user-info\">".Length);
+                             if (index < 0) continue;
+                             int index1 = strresult.IndexOf("\"", index + "<a href=\"/".Length);
+                             if (index1 < 0) continue;
+                             lstSite.Add("https://www.youtube.com/" + strresult.Substring(index + "<a href=\"/".Length, index1 - "<a href=\"/".Length - index));
+                             lstChannelName.Add(strChannel);
+                         }*/
+                    }
+                }
+            }
+            catch { }
+        }
+        #endregion
+        #region {GetWebPageContent}
+        static public string GetWebPageContentProxy_Ultrasurf(string url)
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            string result = "";
+            try
+            {
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+                myRequest.UserAgent = csGlobal.agent_firefox;
+                myRequest.Proxy = new WebProxy("192.168.92.200", 9666);
+                myRequest.Timeout = 30000;
+                WebResponse myResponse = myRequest.GetResponse();
+                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                result = sr.ReadToEnd();
+                sr.Close();
+                myResponse.Close();
+            }
+            catch { result = ""; }
+            return result;
+        }
+        #endregion
+        #region {CheckSiteExist}
+        static public void CheckTargetExist_Youtube(ref List<string> lstSiteAddress, ref List<string> lstChannelName)
+        {
+            var db = csGetMongoData.GetDatabase(csGlobal.strMongoDatabase);
+            var collection01 = db.GetCollection<Mongo_Target>("ImportantTarget");
+            string strSiteAddress = "";
+            for (int i = lstSiteAddress.Count - 1; i >= 0; i--)
+            {
+                strSiteAddress = lstSiteAddress[i];//.Replace("https://", "").Replace("http://", "");
+                if (collection01.AsQueryable().Where(p => p.SiteAddress.Contains(strSiteAddress)).Select(p => new { p.SiteAddress }).Count() > 0)
+                {
+                    lstSiteAddress.RemoveAt(i);
+                    lstChannelName.RemoveAt(i);
+                }
+            }
+            if (lstSiteAddress.Count == 0) return;
+
+            var collection02 = db.GetCollection<Mongo_NewTarget>("NewTarget");
+            for (int i = lstSiteAddress.Count - 1; i >= 0; i--)
+            {
+                //strSiteAddress = lstSiteAddress[i].Replace("https://", "").Replace("http://", "");
+                if (collection02.AsQueryable().Where(p => p.SiteAddress.Contains(strSiteAddress)).Select(p => new { p.SiteAddress }).Count() > 0)
+                {
+                    lstSiteAddress.RemoveAt(i);
+                    lstChannelName.RemoveAt(i);
+                }
+            }
+            if (lstSiteAddress.Count == 0) return;
+
+            var collection03 = db.GetCollection<Mongo_NormalTarget>("NormalTarget");
+            for (int i = lstSiteAddress.Count - 1; i >= 0; i--)
+            {
+                //  strSiteAddress = lstSiteAddress[i].Replace("https://", "").Replace("http://", "");
+                if (collection03.AsQueryable().Where(p => p.SiteAddress.Contains(strSiteAddress)).Select(p => new { p.SiteAddress }).Count() > 0)
+                {
+                    lstSiteAddress.RemoveAt(i);
+                    lstChannelName.RemoveAt(i);
+                }
+            }
+        }
+        #endregion
+        #region {GetSiteTitle}
+        static public string GetSiteTitle(string strPageContent)
+        {
+            try
+            {
+                int index1 = 0, index2 = 0;
+                index1 = strPageContent.IndexOf("\"og:title\"");
+                if (index1 < 0) index1 = strPageContent.IndexOf("'og:title'");
+                if (index1 > 0)
+                {
+                    index2 = index1;
+                    do
+                    {
+                        index1 -= 1;
+                        if (strPageContent.Substring(index1, 1) == "<")
+                            break;
+                    }
+                    while (index1 > 0);
+                    do
+                    {
+                        index2 += 1;
+                        string str = strPageContent.Substring(index2, 1);
+                        if (strPageContent.Substring(index2, 1) == ">")
+                            break;
+                    }
+                    while (index2 < index1 + 500);
+                    strPageContent = strPageContent.Substring(index1, index2 - index1);
+                    index1 = strPageContent.IndexOf("content=\"");
+                    if (index1 < 0) index1 = strPageContent.IndexOf("content='");
+                    if (index1 > 0)
+                    {
+                        index2 = strPageContent.IndexOf("\"", index1 + "content=\"".Length);
+                        if (index2 < 0)
+                            index2 = strPageContent.IndexOf("'", index1 + "content=\"".Length);
+                        if (index2 >= 0)
+                            return strPageContent.Substring(index1 + "content=\"".Length, index2 - index1 - "content=\"".Length);
+                    }
+                }
+
+                index1 = strPageContent.IndexOf("<title>");
+                if (index1 > 0)
+                {
+                    index2 = strPageContent.IndexOf("</title>", index1 + "<title>".Length);
+                    if (index2 > 0)
+                        return strPageContent.Substring(index1 + "<title>".Length, index2 - index1 - "<title>".Length).Trim();
+                }
+            }
+            catch { }
+            return "";
+        }
+        #endregion
     }
-    
+
     public class CookieAwareWebClient : WebClient
     {
         private readonly CookieContainer m_container = new CookieContainer();

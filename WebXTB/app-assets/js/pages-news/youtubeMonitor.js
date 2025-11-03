@@ -3,7 +3,7 @@
     loadYouTubeMonitor();
 
     // 🔁 Tự động load lại sau mỗi 30 giây
-    setInterval(loadYouTubeMonitor, 15000);
+    //setInterval(loadYouTubeMonitor, 15000);
 };
 function loadYouTubeMonitor() {
     $.ajax({
@@ -27,36 +27,45 @@ function extractYouTubeId(url) {
 }
 
 function createLazyYouTube(youtubeId, title, date) {
-    const card = document.createElement('div');
+    var card = document.createElement('div');
     card.className = 'video-card';
 
-    const thumbUrl = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+    var thumbUrl = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+    var { channel, title2 } = splitTitle(title);
 
-    const { channel, title2 } = splitTitle(title);
-    card.innerHTML = `
-        <div class="lazy-yt" data-id="${youtubeId}">
-            <img src="${thumbUrl}" alt="${title2}">
-        </div>
-        <div class="video-title">${title2}</div>
-        <div class="video-date">${channel} - ${date}</div>
-    `;
-
-
-
-    card.querySelector('.lazy-yt').addEventListener('click', function () {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=0`;
+    try {
+        var iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1`;
         iframe.setAttribute("frameborder", "0");
         iframe.setAttribute(
             "allow",
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
         );
         iframe.allowFullscreen = true;
-        this.replaceWith(iframe);
-    });
+
+        // Thêm iframe
+        card.appendChild(iframe);
+
+        // Thêm tiêu đề + ngày đăng (dưới video)
+        card.insertAdjacentHTML('beforeend', `
+            <div class="video-title">${title2}</div>
+            <div class="video-date"><span class="status-badge">Online</span> ${channel} - ${formatDateTime(date)}</div>
+        `);
+    } catch (e) {
+        console.error(e);
+    }
 
     return card;
 }
+function formatDateTime(str) {
+    // Đầu vào: "2025/10/27 09:10"
+    const [datePart, timePart] = str.split(' ');
+    const [year, month, day] = datePart.split('/');
+
+    // Kết quả: "27/10 09:10"
+    return `${day}/${month} ${timePart}`;
+}
+
 function splitTitle(fullTitle) {
     const indexTemp = fullTitle.indexOf(" - ");
     let channel = "";

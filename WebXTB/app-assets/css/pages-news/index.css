@@ -1,12 +1,12 @@
 ﻿#tagCloudCanvas {
     width: 100%;
-    height: 350px;
+    height: 29vh;
     border-radius: 50%; /* tạo cảm giác hình cầu */
     overflow: hidden;
 }
 #newsContainer {
-    max-height: 330px;
-    overflow-y: auto;
+    max-height: 31vh;
+    overflow-y: hidden;
     padding: 10px;
     font-family: Arial, sans-serif;
     background: #fff;
@@ -70,3 +70,9 @@
     .news-item a {
         word-break: break-all;
     }
+
+.card {
+    border: none;
+    margin-bottom: 2rem;
+    height: 42vh; /* 45% chiều cao màn hình hiển thị */
+}

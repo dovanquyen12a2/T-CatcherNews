@@ -763,6 +763,46 @@ namespace WebsiteMonitoring
             collection.InsertOne(document);
         }
         #endregion
+        #region {Insert into InsertIntoNewTarget}
+        static public void InsertIntoNewTarget(string strSiteAddress, string strTitle)
+        {
+            string strTitle_URL = (strSiteAddress + " " + strTitle).ToLower();
+            List<string> lstPottyTitleUseForDectection = new List<string>();
+            csGetMongoData.GetPottyTitleNormalTarget(ref lstPottyTitleUseForDectection, "PottyTitleOfNormalTarget");
+            for (int i = 0; i < lstPottyTitleUseForDectection.Count; i++)
+            {
+                if (lstPottyTitleUseForDectection[i][0] == '.') lstPottyTitleUseForDectection[i] = lstPottyTitleUseForDectection[i] + " ";
+                if (strTitle_URL.ToLower().Contains(lstPottyTitleUseForDectection[i])) return;
+            }
+
+            string strSiteAddressTemp = strSiteAddress.Replace("https://", "").Replace("http://", "");
+            var db = GetDatabase(csGlobal.strMongoDatabase);
+            var collection = db.GetCollection<Mongo_NewTarget>("NewTarget");
+            var count = collection.AsQueryable().Where(p => p.SiteAddress == strSiteAddress).Select(p => new { p.SiteAddress }).Count();
+            if (count > 0) return;
+            DateTime dtNow = DateTime.Now;
+            string strDetectedDate = dtNow.Year.ToString() + "/" + dtNow.Month.ToString().PadLeft(2, '0') + "/" + dtNow.Day.ToString().PadLeft(2, '0');
+
+            Mongo_NewTarget document = new Mongo_NewTarget();
+            document.SiteAddress = strSiteAddress;
+            document.SiteTitle = strTitle;
+            document.FirstSeenDate = "";
+            document.DetectedDate = strDetectedDate;
+            document.Image = null;
+            collection.InsertOne(document);
+        }
+
+        static public void GetPottyTitleNormalTarget(ref List<string> lst, string strCollection)
+        {
+            lst.Clear();
+            var db = GetDatabase(csGlobal.strMongoDatabase);
+            var collection = db.GetCollection<Mongo_Keyword>(strCollection);
+            var result = collection.AsQueryable().Select(p => new { p.Keyword }).OrderBy(p => p.Keyword);
+            if (result.Count() > 0)
+                foreach (var row in result)
+                    lst.Add(row.Keyword);
+        }
+        #endregion
         #region {GetAlertKeyword}
         static public void GetAlertKeyword(ref List<string> lst, string strCollection)
         {

@@ -37,7 +37,7 @@ function getDataDonut() {
 
                 var donutChartConfig = {
                     chart: {
-                        height: 315,
+                        height: Math.floor(window.innerHeight * 0.35),
                         type: 'donut'
                     },
                     legend: {
@@ -161,7 +161,7 @@ function getDataStatisticNewsInWeek() {
             var columnChartEl = document.querySelector('#column-chart'),
                 columnChartConfig = {
                     chart: {
-                        height: 280,
+                        height: Math.floor(window.innerHeight * 0.35),
                         type: 'bar',
                         stacked: false,
                         parentHeightOffset: 0,
@@ -253,7 +253,7 @@ function getDataStatisticTopTargetInWeek() {
             var barChartEl = document.querySelector('#bar-chart'),
                 barChartConfig = {
                     chart: {
-                        height: 280,
+                        height: Math.floor(window.innerHeight * 0.35),
                         type: 'bar',
                         parentHeightOffset: 0,
                         toolbar: {
@@ -338,10 +338,8 @@ function loadTagCloud() {
 
             WordCloud(document.getElementById('tagCloudContainer'), {
                 list: list,
-                gridSize: 8,
-                weightFactor: function (size) {
-                    return size; // đã được scale sẵn từ controller
-                },
+                gridSize: Math.round(12 * $('#tagCloudContainer').width() / 1024),
+                weightFactor: size => size * 0.9,
                 fontFamily: 'Arial, sans-serif',
                 color: function () {
                     const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
@@ -420,13 +418,14 @@ function loadTopNewsSmooth() {
 
                 // Thêm và hiển thị mượt
                 const $el = $(html).appendTo(container);
-                $el.slideDown(400, function () {
-                    // Cuộn xuống dưới cùng để thấy tin mới
-                    container.stop().animate({ scrollTop: container[0].scrollHeight }, 400);
-                });
+                $el.slideDown(800);
+                container.stop().animate(
+                    { scrollTop: container[0].scrollHeight },
+                    { duration: 2000, easing: 'swing' } // 2 giây mượt hơn
+                );
 
                 // Tiếp tục thêm tin kế tiếp
-                setTimeout(appendItem, 5000);
+                setTimeout(appendItem, 2000);
             }
 
             appendItem(); // Bắt đầu
