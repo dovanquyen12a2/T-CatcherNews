@@ -2,7 +2,7 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <History>True|2025-10-28T07:50:48.7366469Z||;True|2025-10-28T10:47:07.0343648+07:00||;True|2025-10-27T09:44:09.1862953+07:00||;False|2025-10-27T09:44:04.1220396+07:00||;True|2025-10-26T15:39:16.7179978+07:00||;True|2025-10-26T15:26:02.2859935+07:00||;False|2025-10-26T15:25:56.0743129+07:00||;</History>
+    <History>True|2025-11-05T01:30:55.6130258Z||;False|2025-11-05T08:30:48.0716580+07:00||;True|2025-10-28T14:50:48.7366469+07:00||;True|2025-10-28T10:47:07.0343648+07:00||;True|2025-10-27T09:44:09.1862953+07:00||;False|2025-10-27T09:44:04.1220396+07:00||;True|2025-10-26T15:39:16.7179978+07:00||;True|2025-10-26T15:26:02.2859935+07:00||;False|2025-10-26T15:25:56.0743129+07:00||;</History>
     <LastFailureDetails />
     <_PublishTargetUrl>C:\Users\PC-04\Desktop\TCatcherClient\WebXTB\bin\app.publish\</_PublishTargetUrl>
   </PropertyGroup>
@@ -118,8 +118,11 @@
     <File Include="app-assets/css/pages-news/newsViewer.css">
       <publishTime>10/26/2025 12:49:58</publishTime>
     </File>
+    <File Include="app-assets/css/pages-news/newTarget.css">
+      <publishTime>10/30/2025 10:41:34</publishTime>
+    </File>
     <File Include="app-assets/css/pages-news/youtubeMonitor.css">
-      <publishTime>10/28/2025 11:09:02</publishTime>
+      <publishTime>10/31/2025 14:21:41</publishTime>
     </File>
     <File Include="app-assets/css/pages/app-calendar.css">
       <publishTime>07/16/2025 21:44:50</publishTime>
@@ -2095,8 +2098,11 @@
     <File Include="app-assets/js/pages-news/newsViewer.js">
       <publishTime>10/26/2025 12:52:35</publishTime>
     </File>
+    <File Include="app-assets/js/pages-news/newTarget.js">
+      <publishTime>10/31/2025 15:04:24</publishTime>
+    </File>
     <File Include="app-assets/js/pages-news/youtubeMonitor.js">
-      <publishTime>10/28/2025 11:04:10</publishTime>
+      <publishTime>10/28/2025 15:01:25</publishTime>
     </File>
     <File Include="app-assets/js/scripts/cards/card-advance.js">
       <publishTime>10/25/2025 12:34:04</publishTime>
@@ -4066,6 +4072,9 @@
     <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
       <publishTime>07/15/2025 16:22:47</publishTime>
     </File>
+    <File Include="bin/Microsoft.Bcl.AsyncInterfaces.dll">
+      <publishTime>10/31/2023 22:00:18</publishTime>
+    </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>07/15/2025 16:22:48</publishTime>
     </File>
@@ -4258,6 +4267,15 @@
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>07/15/2025 16:22:48</publishTime>
     </File>
+    <File Include="bin/runtimes/linux/native/selenium-manager">
+      <publishTime>10/25/2025 09:14:02</publishTime>
+    </File>
+    <File Include="bin/runtimes/osx/native/selenium-manager">
+      <publishTime>10/25/2025 09:14:02</publishTime>
+    </File>
+    <File Include="bin/runtimes/win/native/selenium-manager.exe">
+      <publishTime>10/25/2025 09:14:02</publishTime>
+    </File>
     <File Include="bin/SharpCompress.dll">
       <publishTime>02/27/2019 19:59:46</publishTime>
     </File>
@@ -4270,8 +4288,23 @@
     <File Include="bin/System.Buffers.dll">
       <publishTime>02/19/2020 17:05:18</publishTime>
     </File>
+    <File Include="bin/System.Memory.dll">
+      <publishTime>05/08/2022 10:31:02</publishTime>
+    </File>
+    <File Include="bin/System.Numerics.Vectors.dll">
+      <publishTime>05/15/2018 20:29:44</publishTime>
+    </File>
     <File Include="bin/System.Runtime.CompilerServices.Unsafe.dll">
-      <publishTime>10/20/2020 01:46:30</publishTime>
+      <publishTime>10/23/2021 06:40:18</publishTime>
+    </File>
+    <File Include="bin/System.Text.Encodings.Web.dll">
+      <publishTime>10/31/2023 22:00:28</publishTime>
+    </File>
+    <File Include="bin/System.Text.Json.dll">
+      <publishTime>09/17/2024 06:15:02</publishTime>
+    </File>
+    <File Include="bin/System.Threading.Tasks.Extensions.dll">
+      <publishTime>02/19/2020 17:05:18</publishTime>
     </File>
     <File Include="bin/System.ValueTuple.dll">
       <publishTime>05/15/2018 20:29:52</publishTime>
@@ -4298,10 +4331,13 @@
       <publishTime>07/15/2025 16:22:48</publishTime>
     </File>
     <File Include="bin/WebApplication1.dll">
-      <publishTime>10/28/2025 11:03:31</publishTime>
+      <publishTime>11/05/2025 08:30:52</publishTime>
     </File>
     <File Include="bin/WebApplication1.pdb">
-      <publishTime>10/28/2025 11:03:31</publishTime>
+      <publishTime>11/05/2025 08:30:52</publishTime>
+    </File>
+    <File Include="bin/WebDriver.dll">
+      <publishTime>10/25/2025 09:14:02</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>07/15/2025 16:22:48</publishTime>
@@ -4453,6 +4489,15 @@
     <File Include="mongocrypt.dll">
       <publishTime>10/25/2025 11:53:34</publishTime>
     </File>
+    <File Include="runtimes/linux/native/selenium-manager">
+      <publishTime>10/25/2025 09:14:02</publishTime>
+    </File>
+    <File Include="runtimes/osx/native/selenium-manager">
+      <publishTime>10/25/2025 09:14:02</publishTime>
+    </File>
+    <File Include="runtimes/win/native/selenium-manager.exe">
+      <publishTime>10/25/2025 09:14:02</publishTime>
+    </File>
     <File Include="Scripts/Account/Login.js">
       <publishTime>07/15/2025 16:22:45</publishTime>
     </File>
@@ -4510,14 +4555,17 @@
     <File Include="Views/Home/NewsViewer.cshtml">
       <publishTime>10/26/2025 12:54:32</publishTime>
     </File>
+    <File Include="Views/Home/NewTarget.cshtml">
+      <publishTime>10/31/2025 15:04:01</publishTime>
+    </File>
     <File Include="Views/Home/YoutubeMonitor.cshtml">
-      <publishTime>10/26/2025 14:31:05</publishTime>
+      <publishTime>10/28/2025 14:58:46</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>07/18/2025 09:35:59</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/26/2025 15:36:38</publishTime>
+      <publishTime>10/31/2025 14:32:14</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>07/15/2025 16:22:45</publishTime>
@@ -4526,7 +4574,7 @@
       <publishTime>07/15/2025 16:22:45</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/26/2025 15:26:00</publishTime>
+      <publishTime>11/05/2025 08:30:53</publishTime>
     </File>
   </ItemGroup>
 </Project>

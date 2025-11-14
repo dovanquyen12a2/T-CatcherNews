@@ -1,22 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Data.SqlClient;
-using System.Data;
-using System.Windows.Forms;
-using System.Security.Cryptography;
+﻿using HtmlAgilityPack;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
-using HtmlAgilityPack;
+using System.Windows.Forms;
+
 namespace WebsiteMonitoring
 {
     public class csSupport
@@ -67,6 +72,7 @@ namespace WebsiteMonitoring
             return sb.ToString();
         }
         #endregion
+        #region GetWebPageContent_AutoProxy
         static public string GetWebPageContent_AutoProxy(string url)
         {
          
@@ -108,6 +114,7 @@ namespace WebsiteMonitoring
             }
             return HttpUtility.HtmlDecode(result);
         }
+        #endregion
         #region {GetTitle}
         static public string GetTitle(string strPageContent)
         {
@@ -817,9 +824,9 @@ namespace WebsiteMonitoring
             {
                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
                 myRequest.UserAgent = csGlobal.agent_firefox;
-                WebProxy myproxy = new WebProxy("127.0.0.1", 9666);
-                myproxy.BypassProxyOnLocal = false;
-                myRequest.Proxy = myproxy;
+                //WebProxy myproxy = new WebProxy("127.0.0.1", 9666);
+                //myproxy.BypassProxyOnLocal = false;
+                //myRequest.Proxy = myproxy;
 
                 myRequest.Timeout = 60000;
                 WebResponse myResponse = myRequest.GetResponse();
@@ -831,7 +838,7 @@ namespace WebsiteMonitoring
             }
             catch //thay doi che do proxy
             {
-              
+
             }
             return result;
         }

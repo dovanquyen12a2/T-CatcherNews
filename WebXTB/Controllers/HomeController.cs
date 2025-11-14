@@ -673,39 +673,41 @@ namespace TCatcherClient.Controllers
 
                     lstTemp.Clear();
                     lstTitle.Clear();
-                    strContent = csSupport.GetWebPageContentForGoogleSearch(lstQuery[t]);
+                    strContent = csSupport.GetWebPageContent_AutoProxy(lstQuery[t]);
 
                     if (strContent.Contains("Our systems have detected unusual traffic")) strBlocked = "Blocked";
                     else strBlocked = "";
 
                     if (strBlocked != "Blocked")
                     {
-                        if (lstQuery[t].Contains("youtube"))
-                        {
-                            List<string> lstChannelName = new List<string>();
-                            csSupport.GetListYoutube(strContent, ref lstTemp, ref lstChannelName);
-                            csSupport.CheckTargetExist_Youtube(ref lstTemp, ref lstChannelName);
+                        //if (lstQuery[t].Contains("youtube"))
+                        //{
+                        //    List<string> lstChannelName = new List<string>();
+                        //    csSupport.GetListYoutube(strContent, ref lstTemp, ref lstChannelName);
+                        //    csSupport.CheckTargetExist_Youtube(ref lstTemp, ref lstChannelName);
 
-                            for (int k = 0; k < lstTemp.Count; k++)
-                                csGetMongoData.InsertIntoNewTarget(lstTemp[k], lstChannelName[k]);
-                        }
+                        //    for (int k = 0; k < lstTemp.Count; k++)
+                        //        csGetMongoData.InsertIntoNewTarget(lstTemp[k], lstChannelName[k]);
+                        //}
 
-                        if (lstQuery[t].Contains("lr=lang_vi&"))
-                        {
-                            csSupport.GetSiteFromGoogleSearch(ref lstTemp, strContent);
-                            csSupport.CheckTargetExist(ref lstTemp);
+                        //if (lstQuery[t].Contains("lr=lang_vi&"))
+                        //{
+                        //    csSupport.GetSiteFromGoogleSearch(ref lstTemp, strContent);
+                        //    csSupport.CheckTargetExist(ref lstTemp);
 
-                            for (int k = 0; k < lstTemp.Count; k++)
-                            {
-                                strContent = csSupport.GetWebPageContent_AutoProxy(lstTemp[k]);
-                                if (strContent == "") continue;
-                                string strTitle = csSupport.GetSiteTitle(strContent);
-                                lstTitle.Add(strTitle);
-                                csGetMongoData.InsertIntoNewTarget(lstTemp[k], strTitle);
-                            }
-                        }
+                        //    for (int k = 0; k < lstTemp.Count; k++)
+                        //    {
+                        //        strContent = csSupport.GetWebPageContent_AutoProxy(lstTemp[k]);
+                        //        if (strContent == "") continue;
+                        //        string strTitle = csSupport.GetSiteTitle(strContent);
+                        //        lstTitle.Add(strTitle);
+                        //        csGetMongoData.InsertIntoNewTarget(lstTemp[k], strTitle);
+                        //    }
+                        //}
 
                         int time = rdQuery.Next(10) + 30;
+                        Response.Write($"data: {{\"log\":\"Đã tìm được {lstTemp.Count()}\"}}\n\n");
+
                         Response.Write($"data: {{\"status\":\"Ngủ {time}s trước vòng kế tiếp\"}}\n\n");
                         Response.Flush();
                         Thread.Sleep(time * 1000);
